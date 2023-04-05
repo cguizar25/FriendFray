@@ -14,7 +14,7 @@ class Collision {
 };
 
 class Character {
-  constructor({ position, velocity, image, movements = { max: 1 }, frames }) {
+  constructor({ position, velocity, image, movements = { max: 1, hold: 10 }, frames, animate = false }) {
     this.position = position
     this.image = image
     this.movements = { ...movements, val: 0, elapsed: 0 }
@@ -24,7 +24,7 @@ class Character {
       this.width = this.image.width / this.movements.max;
       this.height = this.image.height;
     }
-    this.inMotion = false
+    this.animate = animate
   }
 
   draw() {
@@ -40,11 +40,11 @@ class Character {
       this.image.height
     )
 
-    if (!this.inMotion) return
+    if (!this.animate) return
 
     if (this.movements.max > 1) this.movements.elapsed++;
 
-    if (this.movements.elapsed % 10 === 0) {
+    if (this.movements.elapsed % this.movements.hold === 0) {
       if (this.movements.val < this.movements.max - 1) this.movements.val++
       else this.movements.val = 0
     }

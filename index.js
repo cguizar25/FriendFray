@@ -73,7 +73,8 @@ const player = new Character({
   },
   image: playerDown,
   movements: {
-    max: 4
+    max: 4,
+    hold: 10
   },
   frames:{
     up: playerUp,
@@ -133,7 +134,7 @@ const animate = () => {
   player.draw();
 
   let inMotion = true;
-  player.inMotion = false;
+  player.animate = false;
 
   if (fight.started) return;
 
@@ -173,7 +174,7 @@ const animate = () => {
   };
 
   if (keys.w.pressed && lastPressed === 'w') {
-    player.inMotion = true;
+    player.animate = true;
     player.image = player.frames.up;
 
     for (let i = 0; i < borders.length; i++) {
@@ -198,7 +199,7 @@ const animate = () => {
       });
     }
   } else if (keys.s.pressed && lastPressed === 's') {
-    player.inMotion = true
+    player.animate = true
     player.image = player.frames.down;
 
     for (let i = 0; i < borders.length; i++) {
@@ -223,7 +224,7 @@ const animate = () => {
       });
     }
   } else if (keys.a.pressed && lastPressed === 'a') {
-    player.inMotion = true;
+    player.animate = true;
     player.image = player.frames.left;
 
     for (let i = 0; i < borders.length; i++) {
@@ -248,7 +249,7 @@ const animate = () => {
       });
     }
   } else if (keys.d.pressed && lastPressed === 'd') {
-    player.inMotion = true;
+    player.animate = true;
     player.image = player.frames.right;
 
     for (let i = 0; i < borders.length; i++) {
@@ -277,7 +278,7 @@ const animate = () => {
 
 animate();
 
-let fightBackgroundImage = new Image();
+const fightBackgroundImage = new Image();
 fightBackgroundImage.src = './img/FightBackground.png';
 const fightBackground = new Character({
   position: {
@@ -287,9 +288,37 @@ const fightBackground = new Character({
   image: fightBackgroundImage
 });
 
+const krabbyImage = new Image();
+krabbyImage.src = './img/Crab1.png';
+
+const krabby = new Character({
+  position: {
+    x: 720,
+    y: 180
+  },
+  image: krabbyImage
+});
+
+const friendImage = new Image();
+friendImage.src = './img/FightMode.png';
+const friend = new Character({
+  position: {
+    x: 290,
+    y: 320
+  },
+  image: friendImage,
+  movements: {
+    max: 4,
+    hold: 30
+  },
+  animate: true
+})
+
 const animateFight = () => {
   window.requestAnimationFrame(animateFight);
   fightBackground.draw();
+  krabby.draw();
+  friend.draw();
 }
 
 let lastPressed = ''
